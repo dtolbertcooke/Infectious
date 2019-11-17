@@ -1,0 +1,50 @@
+{% extends "index.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}{{title}}{% endblock %}
+
+{% block navbar %}
+ {{ super() }}
+{% endblock %}
+
+
+{% block head %}
+    {{ super() }}
+{% endblock %}
+
+{% block test %}
+<!--
+    <section id="signup" class="about-section text-center">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 mx-auto">
+          <h2 class="text-white mb-4">How're you feeling today?</h2>
+          <p class="text-white-50">Enter up to three emotions below.</p>
+            {{ wtf.quick_form(form) }}
+        </div>
+      </div>
+    </div>
+  </section>
+-->
+{% endblock %}
+
+
+{% block content %}
+    <section id="signup" class="signup-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-10 col-lg-8 mx-auto text-center">
+                    <h2 class="text-white">How are you feeling today?</h2>
+                    <p class="text-white-50">Enter up to three emotions below.</p>
+                    {{ wtf.quick_form(form) }}
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+
+
+{% block footer %}
+    {{ super() }}
+{% endblock %}
