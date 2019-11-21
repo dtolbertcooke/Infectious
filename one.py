@@ -66,7 +66,7 @@ def pre_processing_data(my_URL):
 the_URL = 'https://www.metacritic.com/browse/games/genre/metascore/action/ps4?view=detailed'
 
 num_count = 0
-for x in range(29):
+for x in range(29): #change range value based on number of pages
     game_name, game_score = pre_processing_data(the_URL + '&page='+str(x))
     with open('data_file.txt', 'a') as filehandle:
         for g_name, m_score in zip(game_name, game_score):
