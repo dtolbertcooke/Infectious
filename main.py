@@ -34,6 +34,20 @@ def results():
     return render_template("results.html", title=title)
 
 
+@app.route('/register', methods=['GET', 'POST'])
+def signup():
+    title = 'Register'
+    form = RegisterForm()
+    return render_template("register.html", form=form, title=title)
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    title = 'Login'
+    form = LoginForm()
+    return render_template("login.html", form=form, title=title)
+
+
 @app.route('/test')
 def test_page():
     return render_template('test.html')
