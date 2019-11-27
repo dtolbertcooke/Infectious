@@ -66,7 +66,7 @@ def pre_processing_data(my_URL):
 the_URL = 'https://www.metacritic.com/browse/games/genre/metascore/action/ps4?view=detailed'
 
 num_count = 0
-for x in range(29): #change range value based on number of pages
+for x in range(29): # change range value based on number of pages
     game_name, game_score = pre_processing_data(the_URL + '&page='+str(x))
     with open('data_file.txt', 'a') as filehandle:
         for g_name, m_score in zip(game_name, game_score):
@@ -76,6 +76,6 @@ for x in range(29): #change range value based on number of pages
     randooom_num = random.randint(10, 25)*5,
     wait_time = int(randooom_num[0])
     time.sleep(wait_time)
-    print('Page number', x, 'Wait TIme', wait_time)
+    # print('Page number', x, 'Wait Time', wait_time)
 
 filehandle.close()
