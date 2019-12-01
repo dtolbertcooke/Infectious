@@ -23,6 +23,11 @@
   <link href="../static/css/grayscale.min.css" rel="stylesheet">
 
   <style type="text/css">
+      body#page-top {
+          margin: 0;
+          height: 100%;
+      }
+
       .btn-primary {
           background-color: teal !important;
       }
@@ -37,6 +42,57 @@
 
       .signup-section {
           background: linear-gradient(to bottom,rgba(22,22,22,.1) 0,rgba(22,22,22,.5) 75%,#161616 100%),url(../static/img/test2.jpg);
+          background-size: cover;
+      }
+
+      table {
+          width: 800px;
+          background-color: gray;
+          margin-left: 275px;
+          margin-right: 160px;
+      }
+
+      thead {
+          background-color: teal;
+          border-bottom: 5px solid black;
+      }
+
+      th {
+          width: 100px;
+          font: 20px Nunito;
+          font-weight: bold;
+      }
+
+      td {
+          font-family: Nunito;
+      }
+
+      th, td {
+          padding: 15px;
+      }
+
+      tr:nth-child(even) {
+          background-color: #f2f2f2;
+      }
+
+      caption {
+          caption-side: top;
+          color: white;
+          font: 40px Nunito;
+      }
+
+      .results.text-white {
+          padding-top: 100px;
+          padding-left: 275px;
+      }
+
+      hr {
+          border: 1px solid black;
+      }
+
+      section {
+          background-image: linear-gradient(rgba(22, 22, 22, 0.3) 0px, rgba(22, 22, 22, 0.7) 75%, rgb(22, 22, 22) 100%), url(../static/img/test2.jpg);
+          background-size: cover;
       }
   </style>
 

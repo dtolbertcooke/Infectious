@@ -6,19 +6,19 @@ from wtforms.validators import DataRequired, Length
 class EmotionForm(FlaskForm):
     emotion1 = SelectField('', choices=[(1, 'Select an emotion...'), ('Fear', 'Fear'),
                                    ('Anger', 'Anger'), ('Sadness', 'Sadness'),
-                                   ('Joy', 'Joy'), ('Disgust', 'Disgust'),
-                                   ('Surprise', 'Surprise'), ('Trust', 'Trust'),
-                                   ('Anticipation', 'Anticipation')], default=1)
+                                   ('Joy', 'Joy'), ('Surprise', 'Surprise'),
+                                   ('Trust', 'Trust'), ('Anticipation', 'Anticipation')],
+                                    default=1)
     emotion2 = SelectField('', choices=[(1, 'Select an emotion...'), ('Fear', 'Fear'),
                                    ('Anger', 'Anger'), ('Sadness', 'Sadness'),
-                                   ('Joy', 'Joy'), ('Disgust', 'Disgust'),
-                                   ('Surprise', 'Surprise'), ('Trust', 'Trust'),
-                                   ('Anticipation', 'Anticipation')], default=1)
+                                   ('Joy', 'Joy'), ('Surprise', 'Surprise'),
+                                   ('Trust', 'Trust'), ('Anticipation', 'Anticipation')],
+                                    default=1)
     emotion3 = SelectField('', choices=[(1, 'Select an emotion...'), ('Fear', 'Fear'),
                                    ('Anger', 'Anger'), ('Sadness', 'Sadness'),
-                                   ('Joy', 'Joy'), ('Disgust', 'Disgust'),
-                                   ('Surprise', 'Surprise'), ('Trust', 'Trust'),
-                                   ('Anticipation', 'Anticipation')], default=1)
+                                   ('Joy', 'Joy'), ('Surprise', 'Surprise'),
+                                   ('Trust', 'Trust'), ('Anticipation', 'Anticipation')],
+                                    default=1)
     submit = SubmitField('Submit')
 
 

@@ -23,44 +23,44 @@ def pre_processing_data(my_URL):
     find_all_meta_score = soup.find_all("div", class_="metascore_w large game positive")
 
     a = []
-    b = []
-    c = []
-    f = []
-    g = []
+    # b = []
+    # c = []
+    # f = []
+    # g = []
 
     num = 29
     for index, value in enumerate(find_all_clamp_summary_wrap):
         a.append(str(value))
         if num == index:
             break
-
-    for x in a:
-        aa = remove_tags(x)
-        b.append(aa)
-
-    the_n_sing = [x.strip(' ') for x in b]
-
-    for x in the_n_sing:
-        j = x.replace(' ', '')
-        c.append(j)
-
-    d = map(lambda s: s.strip(), c)
-
-    e = list(d)
-
-    for x in find_all_meta_score:
-        f.append(str(x))
-
-    indexx = 0
-    for index, value in enumerate(f):
-        if index % 2:
-            indexx += 1
-            dfdf = remove_tags(value)
-            g.append(dfdf)
-        else:
-            pass
-
-    return e, g
+    #
+    # for x in a:
+    #     aa = remove_tags(x)
+    #     b.append(aa)
+    #
+    # the_n_sing = [x.strip(' ') for x in b]
+    #
+    # for x in the_n_sing:
+    #     j = x.replace(' ', '')
+    #     c.append(j)
+    #
+    # d = map(lambda s: s.strip(), c)
+    #
+    # e = list(d)
+    #
+    # for x in find_all_meta_score:
+    #     f.append(str(x))
+    #
+    # indexx = 0
+    # for index, value in enumerate(f):
+    #     if index % 2:
+    #         indexx += 1
+    #         dfdf = remove_tags(value)
+    #         g.append(dfdf)
+    #     else:
+    #         pass
+    #
+    # return e, g
 
 
 the_URL = 'https://www.metacritic.com/browse/games/genre/metascore/action/ps4?view=detailed'
