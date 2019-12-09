@@ -2,22 +2,21 @@ from flask import Flask, render_template, redirect, url_for
 from flask_bootstrap import Bootstrap
 from flask_moment import Moment
 from forms import *
+import pandas as pd
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+import pymysql
+import sys
 from bs4 import BeautifulSoup as SOUP
 import re
 import requests as HTTP
-import pandas as pd
 import numpy as np
-from sklearn.feature_extraction.text import CountVectorizer
-from sklearn.metrics.pairwise import cosine_similarity
+# from flask_user import roles_required
 
-'''
-import pymysql
-from flask_user import roles_required
-'''
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'Infectious is a fantastic app'
-
+app.db = None
 bootstrap = Bootstrap(app)
 moment = Moment(app)
 
@@ -34,8 +33,46 @@ def combine_features(row):
     return row['categories'] + " " + row['genres'] + " " + row["steamspy_tags"]
 
 
-df = pd.read_csv("steam_games_dataset.csv")
+df = pd.read_csv("data/steam_games_dataset.csv")
 # print(df.columns)
+
+
+def get_categories():
+    app.db = pymysql.connect('127.0.0.1', 'root', 'infectious', 'infectious')
+    c = app.db.cursor()
+    c.execute('SELECT categories FROM mytable;')
+    categories_data = c.fetchall()
+    app.db.commit()
+    c.close()
+    return categories_data
+
+
+def get_genres():
+    c = app.db.cursor()
+    query = "SELECT genres FROM mytable;"
+    c.execute(query)
+    genres_data = c.fetchall()
+    app.db.commit()
+    c.close()
+    return genres_data
+
+
+def get_steamspy_tags():
+    query = "SELECT genres FROM mytable;"
+    c = app.db.cursor()
+    c.execute(query)
+    steamspy_data = c.fetchall()
+    app.db.commit()
+    c.close()
+    return steamspy_data
+
+
+# categories = get_categories()
+# genres = get_genres()
+# steamspy_id = get_steamspy_tags()
+#
+# print(categories[0], genres[0], steamspy_id[0])
+
 features = ['categories', 'genres', 'steamspy_tags']
 df["combined_features"] = df.apply(combine_features, axis=1)
 cv = CountVectorizer() # Convert a collection of text documents to a matrix of token counts
