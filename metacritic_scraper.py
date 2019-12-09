@@ -7,13 +7,13 @@ Metacritic eventually disconnects me so I can't scrape EVERY page
 but I can get a good amount of data before I'm disconnected
 '''
 
-f = csv.writer(open('all-PS4-action-by-score.csv', 'w'))
-f.writerow(['Game Name', 'Metacritic Score', 'Game URL'])
-f.writerow([])
-
-g = csv.writer(open('all-game-names.csv', 'w'))
-g.writerow(['Game Name'])
-g.writerow([])
+# f = csv.writer(open('all-PS4-action-by-score.csv', 'w'))
+# f.writerow(['Game Name', 'Metacritic Score', 'Game URL'])
+# f.writerow([])
+#
+# g = csv.writer(open('all-game-names.csv', 'w'))
+# g.writerow(['Game Name'])
+# g.writerow([])
 
 pages = []
 names_array = []
@@ -38,7 +38,7 @@ for item in pages:
         names = game_name.contents[0].strip()
         names_array.append(names)
         # print(game_name.prettify())
-        # print(names)
+        print(names)
     for index, game_score in enumerate(all_game_scores_list):
         if index % 2:
             scores = game_score.contents[0]
@@ -55,6 +55,6 @@ for item in pages:
         #f.writerow([names_array[i], scores_array[j], links_array[k]])
 
     # for just game name
-    for x in range(len(names_array)):
-        g.writerow([names_array[x]])
+    # for x in range(len(names_array)):
+    #     g.writerow([names_array[x]])
 

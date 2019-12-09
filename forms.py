@@ -1,24 +1,31 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, PasswordField, SelectField, IntegerField
-from wtforms.validators import DataRequired, Length
+from wtforms.validators import DataRequired, Length, AnyOf
 
 
+# Fix validators. They're supposed to make it so 1 value is acceptable. Currently, it requires all 3.
 class EmotionForm(FlaskForm):
-    emotion1 = SelectField('', choices=[(1, 'Select an emotion...'), ('Fear', 'Fear'),
-                                   ('Anger', 'Anger'), ('Sadness', 'Sadness'),
-                                   ('Joy', 'Joy'), ('Surprise', 'Surprise'),
-                                   ('Trust', 'Trust'), ('Anticipation', 'Anticipation')],
-                                    default=1)
-    emotion2 = SelectField('', choices=[(1, 'Select an emotion...'), ('Fear', 'Fear'),
-                                   ('Anger', 'Anger'), ('Sadness', 'Sadness'),
-                                   ('Joy', 'Joy'), ('Surprise', 'Surprise'),
-                                   ('Trust', 'Trust'), ('Anticipation', 'Anticipation')],
-                                    default=1)
-    emotion3 = SelectField('', choices=[(1, 'Select an emotion...'), ('Fear', 'Fear'),
-                                   ('Anger', 'Anger'), ('Sadness', 'Sadness'),
-                                   ('Joy', 'Joy'), ('Surprise', 'Surprise'),
-                                   ('Trust', 'Trust'), ('Anticipation', 'Anticipation')],
-                                    default=1)
+    gameName = StringField('', render_kw={"placeholder": "Game name"},
+                           validators=[DataRequired(), Length(min=3, max=20)])
+
+    # emotion1 = SelectField('', choices=[(1, 'Select an emotion...'), ('Fear', 'Fear'),
+    #                                     ('Anger', 'Anger'), ('Sadness', 'Sadness'),
+    #                                     ('Joy', 'Joy'), ('Surprise', 'Surprise'),
+    #                                     ('Trust', 'Trust'), ('Anticipation', 'Anticipation')],
+    #                        default=1, validators=[DataRequired()])
+    # emotion2 = SelectField('', choices=[(1, 'Select an emotion...'), ('Fear', 'Fear'),
+    #                                     ('Anger', 'Anger'), ('Sadness', 'Sadness'),
+    #                                     ('Joy', 'Joy'), ('Surprise', 'Surprise'),
+    #                                     ('Trust', 'Trust'), ('Anticipation', 'Anticipation')],
+    #                        default=1, validators=[
+    #         AnyOf(['Select an emotion...', 'Fear', 'Anger', 'Sadness', 'Joy', 'Surprise', 'Trust', 'Anticipation'])])
+    # emotion3 = SelectField('', choices=[(1, 'Select an emotion...'), ('Fear', 'Fear'),
+    #                                     ('Anger', 'Anger'), ('Sadness', 'Sadness'),
+    #                                     ('Joy', 'Joy'), ('Surprise', 'Surprise'),
+    #                                     ('Trust', 'Trust'), ('Anticipation', 'Anticipation')],
+    #                        default=1, validators=[
+    #         AnyOf(['Select an emotion...', 'Fear', 'Anger', 'Sadness', 'Joy', 'Surprise', 'Trust', 'Anticipation'])])
+
     submit = SubmitField('Submit')
 
 

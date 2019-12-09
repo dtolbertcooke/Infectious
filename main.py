@@ -2,16 +2,17 @@ from flask import Flask, render_template, redirect, url_for
 from flask_bootstrap import Bootstrap
 from flask_moment import Moment
 from forms import *
-from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, IntegerField, PasswordField, SelectField
-from wtforms.validators import DataRequired, NumberRange
 from bs4 import BeautifulSoup as SOUP
 import re
 import requests as HTTP
+import pandas as pd
+import numpy as np
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
 
 '''
 import pymysql
-from flask_user import roles_required   # we will have three roles; admin, intern, sponsor
+from flask_user import roles_required
 '''
 
 app = Flask(__name__)
@@ -21,17 +22,69 @@ bootstrap = Bootstrap(app)
 moment = Moment(app)
 
 
+def get_name_from_game_id(game_id):
+    return df[df.game_id == game_id]["name"].values[0]
+
+
+def get_game_id_from_name(name):
+    return df[df.name == name]["game_id"].values[0]
+
+
+def combine_features(row):
+    return row['categories'] + " " + row['genres'] + " " + row["steamspy_tags"]
+
+
+df = pd.read_csv("steam_games_dataset.csv")
+# print(df.columns)
+features = ['categories', 'genres', 'steamspy_tags']
+df["combined_features"] = df.apply(combine_features, axis=1)
+cv = CountVectorizer() # Convert a collection of text documents to a matrix of token counts
+count_matrix = cv.fit_transform(df["combined_features"])
+cosine_sim = cosine_similarity(count_matrix)
+# game_user_likes = "Left 4 Dead"
+
+similar_games_array = []
+
+
 @app.route('/', methods=['GET', 'POST'])
 def home():
-    title = 'Infectious - A video game recommendation system based on emotion'
+    title = 'Infectious - A video game recommendation system'
     form = EmotionForm()
+
+    if form.validate_on_submit():
+        game_user_likes = form.gameName.data
+        game_index = get_game_id_from_name(game_user_likes)
+        similar_games = list(enumerate(cosine_sim[game_index]))
+        sorted_similar_games = sorted(similar_games, key=lambda x: x[1], reverse=True)
+
+        i = 0
+        for element in sorted_similar_games:
+            # similar_games_array.append(get_name_from_game_id(element[0]))
+            # print(similar_games_array[i])
+            sim_games = get_name_from_game_id(element[0])
+            similar_games_array.append(sim_games)
+            #print(sim_games)
+            i = i + 1
+            if i >= 7:
+                break
+        # print(similar_games_array)
+        # for i in similar_games_array:
+        #     print(i)
+
+        return redirect(url_for('results'))
     return render_template("home.html", form=form, title=title)
 
 
 @app.route('/results', methods=['GET', 'POST'])
 def results():
     title = 'Results'
-    return render_template("results.html", title=title)
+    game1 = similar_games_array[1]
+    game2 = similar_games_array[2]
+    game3 = similar_games_array[3]
+    game4 = similar_games_array[4]
+    game5 = similar_games_array[5]
+    game6 = similar_games_array[6]
+    return render_template("results.html", title=title, game1=game1, game2=game2, game3=game3, game4=game4, game5=game5, game6=game6)
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -51,62 +104,6 @@ def login():
 @app.route('/test')
 def test_page():
     return render_template('test.html')
-
-
-def main(emotion_param):
-    # IMDb Url for Drama genre of
-    # movie against emotion Sad
-    if (emotion_param == "Sad"):
-        urlhere = 'http://www.imdb.com/search/title?genres=drama&title_type=feature&sort=moviemeter, asc'
-
-    # IMDb Url for Musical genre of
-    # movie against emotion Disgust
-    elif (emotion_param == "Disgust"):
-        urlhere = 'http://www.imdb.com/search/title?genres=musical&title_type=feature&sort=moviemeter, asc'
-
-    # IMDb Url for Family genre of
-    # movie against emotion Anger
-    elif (emotion_param == "Anger"):
-        urlhere = 'http://www.imdb.com/search/title?genres=family&title_type=feature&sort=moviemeter, asc'
-
-    # IMDb Url for Thriller genre of
-    # movie against emotion Anticipation
-    elif (emotion_param == "Anticipation"):
-        urlhere = 'http://www.imdb.com/search/title?genres=thriller&title_type=feature&sort=moviemeter, asc'
-
-    # IMDb Url for Sport genre of
-    # movie against emotion Fear
-    elif (emotion_param == "Fear"):
-        urlhere = 'http://www.imdb.com/search/title?genres=sport&title_type=feature&sort=moviemeter, asc'
-
-    # IMDb Url for Thriller genre of
-    # movie against emotion Enjoyment
-    elif (emotion_param == "Enjoyment"):
-        urlhere = 'http://www.imdb.com/search/title?genres=thriller&title_type=feature&sort=moviemeter, asc'
-
-    # IMDb Url for Western genre of
-    # movie against emotion Trust
-    elif (emotion_param == "Trust"):
-        urlhere = 'http://www.imdb.com/search/title?genres=western&title_type=feature&sort=moviemeter, asc'
-
-    # IMDb Url for Film_noir genre of
-    # movie against emotion Surprise
-    elif (emotion_param == "Surprise"):
-        urlhere = 'http://www.imdb.com/search/title?genres=film_noir&title_type=feature&sort=moviemeter, asc'
-
-    # HTTP request to get the data of
-    # the whole page
-    response = HTTP.get(urlhere)
-    data = response.text
-
-    # Parsing the data using
-    # BeautifulSoup
-    soup = SOUP(data, "lxml")
-
-    # Extract movie titles from the
-    # data using regex
-    title = soup.find_all("a", attrs={"href": re.compile(r'\/title\/tt+\d*\/')})
-    return title
 
 
 if __name__ == '__main__':
