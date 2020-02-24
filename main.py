@@ -42,7 +42,7 @@ def combine_features(row):
 
 # df = pd.read_csv("data/steam_games_dataset.csv")
 # print(df.columns)
-df = pd.read_csv("data/small_dataset.csv")
+df = pd.read_csv("data/medium_dataset.csv")
 
 
 # def get_categories():
@@ -112,7 +112,7 @@ def home():
         game_user_likes = form.gameName.data
         game_index = get_game_id_from_name(game_user_likes)
         similar_games = list(enumerate(cosine_sim[game_index]))
-        sorted_similar_games = sorted(similar_games, key=lambda x: x[1], reverse=True)
+        sorted_similar_games = sorted(similar_games, key=lambda x: x[1], reverse=True)[1:]
 
         i = 0
         for element in sorted_similar_games:

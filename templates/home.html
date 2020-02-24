@@ -1,7 +1,7 @@
 {% extends "index.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
 
-{% block title %}{{title}}{% endblock %}
+{% block title %}{{ title }}{% endblock %}
 
 {% block navbar %}
  {{ super() }}
@@ -21,7 +21,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-10 col-lg-8 mx-auto text-center">
-                    <h2 class="text-white">Search</h2>
+                    <h2 class="text-white">Video Game Recommendation System</h2>
                     <p class="text-white-50">Enter the name of a game below.</p>
                     {{ wtf.quick_form(form) }}
                 </div>

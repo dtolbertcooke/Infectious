@@ -1,7 +1,7 @@
 {% extends "index.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
 
-{% block title %}{{title}}{% endblock %}
+{% block title %}{{ title }}{% endblock %}
 
 {% block navbar %}
  <!-- Navigation bar-->
@@ -35,6 +35,7 @@
                 <div class="col-md-10 col-lg-8 mx-auto text-center">
                     <h2 class="text-white">Registration</h2>
                     {{ wtf.quick_form(form) }}
+{#                    {{ form.fName(autocomplete="off") }}#}
                 </div>
             </div>
         </div>
