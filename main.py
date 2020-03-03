@@ -5,128 +5,67 @@ from forms import *
 import pandas as pd
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
-import pymysql
-import sys
-from bs4 import BeautifulSoup as SOUP
-import re
-import requests as HTTP
-import numpy as np
-
-# from flask_user import roles_required
-
+import mysql.connector
+from mysql.connector import errorcode
+# import pymysql
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'Infectious is a fantastic app'
-# app.db = None
-# app.db = pymysql.connect('127.0.0.1', 'root', 'infectious', 'infectious')
-# c = app.db.cursor()
 bootstrap = Bootstrap(app)
 moment = Moment(app)
+# login_manager = LoginManager(app)
+# login_manager.login_view = 'login'
+# db = pymysql.connect(host='127.0.0.1', user='root', password='capitalD95', db='Infectious')
+db = mysql.connector.connect(user='doug', password='infectious1234', host='127.0.0.1', database='Infectious')
+c = db.cursor()
 
 
-def get_name_from_game_id(game_id):
-    return df[df.game_id == game_id]["name"].values[0]
+def get_title_from_index(index):
+    return df[df.index == index]["title"].values[0]
 
-# def get_name_from_game_id(game_id):
-#     return c.execute('SELECT name FROM mytable WHERE game_id = %s;' % game_id)
 
-def get_game_id_from_name(name):
-    return df[df.name == name]["game_id"].values[0]
+def get_index_from_title(title):
+    return df[df.title == title]["index"].values[0]
 
-# def get_game_id_from_name(name):
-#     return c.execute('SELECT game_id FROM mytable WHERE name = %s;' % name)
 
 def combine_features(row):
-    return row['categories'] + " " + row['genres'] + " " + row["steamspy_tags"]
+    return row['genres'] + " " + row['keywords'] + " " + row["cast"] + " " + row["director"]
 
 
-# df = pd.read_csv("data/steam_games_dataset.csv")
+df = pd.read_csv("data/movie_dataset.csv")
 # print(df.columns)
-df = pd.read_csv("data/medium_dataset.csv")
 
 
-# def get_categories():
-#     # app.db = pymysql.connect('127.0.0.1', 'root', 'infectious', 'infectious')
-#     # c = app.db.cursor()
-#     c.execute('SELECT categories FROM mytable;')
-#     categories_data = c.fetchall()
-#     app.db.commit()
-#     c.close()
-#     return categories_data
-#
-#
-# def get_genres():
-#     c = app.db.cursor()
-#     query = "SELECT genres FROM mytable;"
-#     c.execute(query)
-#     genres_data = c.fetchall()
-#     app.db.commit()
-#     c.close()
-#     return genres_data
-#
-#
-# def get_steamspy_tags():
-#     query = "SELECT genres FROM mytable;"
-#     c = app.db.cursor()
-#     c.execute(query)
-#     steamspy_data = c.fetchall()
-#     app.db.commit()
-#     c.close()
-#     return steamspy_data
-#
-#
-# def combine():
-#     categories = get_categories()
-#     genres = get_genres()
-#     steamspy_id = get_steamspy_tags()
-#     combined = categories + genres + steamspy_id
-#     return combined
-
-
-# print(combine())
-
-# categories = get_categories()
-# genres = get_genres()
-# steamspy_id = get_steamspy_tags()
-
-# print(categories[0], genres[0], steamspy_id[0])
-
-features = ['categories', 'genres', 'steamspy_tags']
+features = ['genres', 'keywords', 'cast', 'director']
+for feature in features:
+    df[feature] = df[feature].fillna('')
 df["combined_features"] = df.apply(combine_features, axis=1)
+
 cv = CountVectorizer()  # Convert a collection of text documents to a matrix of token counts
 count_matrix = cv.fit_transform(df["combined_features"])
-# count_matrix = cv.fit_transform(combine())
-# print(type(df["combined_features"])) // --> <class 'pandas.core.series.Series'>
 cosine_sim = cosine_similarity(count_matrix)
-# game_user_likes = "Left 4 Dead"
+# movie_user_likes = "Avatar"
 
-similar_games_array = []
+similar_movies_array = []
 
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
     title = 'Infectious - A video game recommendation system'
-    form = EmotionForm()
+    form = MovieForm()
 
     if form.validate_on_submit():
-        game_user_likes = form.gameName.data
-        game_index = get_game_id_from_name(game_user_likes)
-        similar_games = list(enumerate(cosine_sim[game_index]))
-        sorted_similar_games = sorted(similar_games, key=lambda x: x[1], reverse=True)[1:]
+        movie_user_likes = form.movieName.data
+        movie_index = get_index_from_title(movie_user_likes)
+        similar_movies = list(enumerate(cosine_sim[movie_index]))
+        sorted_similar_movies = sorted(similar_movies, key=lambda x: x[1], reverse=True)[1:]
 
         i = 0
-        for element in sorted_similar_games:
-            similar_games_array.append(get_name_from_game_id(element[0]))
-            # print(similar_games_array[i])
-            sim_games = get_name_from_game_id(element[0])
-            similar_games_array.append(sim_games)
-            # print(sim_games)
+        for element in sorted_similar_movies:
+            similar_movies_array.append(get_title_from_index(element[0]))
             i = i + 1
             if i >= 7:
                 break
-        # print(similar_games_array)
-        # for i in similar_games_array:
-        #     print(i)
 
         return redirect(url_for('results'))
     return render_template("home.html", form=form, title=title)
@@ -135,20 +74,30 @@ def home():
 @app.route('/results', methods=['GET', 'POST'])
 def results():
     title = 'Results'
-    game1 = similar_games_array[1]
-    game2 = similar_games_array[2]
-    game3 = similar_games_array[3]
-    game4 = similar_games_array[4]
-    game5 = similar_games_array[5]
-    game6 = similar_games_array[6]
-    return render_template("results.html", title=title, game1=game1, game2=game2, game3=game3, game4=game4, game5=game5,
-                           game6=game6)
+    movie1 = similar_movies_array[0]
+    movie2 = similar_movies_array[1]
+    movie3 = similar_movies_array[2]
+    movie4 = similar_movies_array[3]
+    movie5 = similar_movies_array[4]
+    movie6 = similar_movies_array[5]
+    return render_template("results.html", title=title, movie1=movie1, movie2=movie2, movie3=movie3, movie4=movie4,
+                           movie5=movie5, movie6=movie6)
 
 
 @app.route('/register', methods=['GET', 'POST'])
 def signup():
     title = 'Register'
     form = RegisterForm()
+
+    if form.validate_on_submit():
+        fName = form.fName.data
+        lName = form.lName.data
+        username = form.username.data
+
+        c.execute('INSERT INTO registration values("%s","%s","%s")' % (
+        fName, lName, username))
+
+        db.commit()
     return render_template("register.html", form=form, title=title)
 
 

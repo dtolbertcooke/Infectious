@@ -4,8 +4,9 @@ from wtforms.validators import DataRequired, Length, AnyOf
 
 
 # Fix validators. They're supposed to make it so 1 value is acceptable. Currently, it requires all 3.
-class EmotionForm(FlaskForm):
-    gameName = StringField('', render_kw={"placeholder": "Game name"},
+# class EmotionForm(FlaskForm):
+class MovieForm(FlaskForm):
+    movieName = StringField('', render_kw={"placeholder": "Movie name"},
                            validators=[DataRequired(), Length(min=3, max=20)])
 
     # emotion1 = SelectField('', choices=[(1, 'Select an emotion...'), ('Fear', 'Fear'),
@@ -31,7 +32,7 @@ class EmotionForm(FlaskForm):
 
 class LoginForm(FlaskForm):
     username = StringField('', render_kw={"placeholder": "Username"},
-                           validators=[DataRequired(), Length(min=3, max=20)])
+                           validators=[DataRequired(), Length(min=3, max=35)])
     password = PasswordField('', render_kw={"placeholder": "Password"},
                              validators=[DataRequired(), Length(min=3, max=20)])
     login = SubmitField('Login')
