@@ -10,12 +10,13 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="blu-test" />
+    <orderEntry type="module" module-name="blu-test" />
   </component>
   <component name="TemplatesService">
     <option name="TEMPLATE_CONFIGURATION" value="Jinja2" />
     <option name="TEMPLATE_FOLDERS">
       <list>
-        <option value="$MODULE_DIR$/../../../FALL 2019 (last semester )/CSC 400-80W/Infectious - Video Game Recommendaton Application/templates" />
+        <option value="/Users/../FALL 2019 (last semester )/CSC 400-80W/Infectious - Video Game Recommendaton Application/templates" />
       </list>
     </option>
   </component>

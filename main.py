@@ -7,6 +7,7 @@ from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import mysql.connector
 from mysql.connector import errorcode
+from werkzeug.security import generate_password_hash, check_password_hash
 # import pymysql
 
 app = Flask(__name__)
@@ -16,7 +17,7 @@ moment = Moment(app)
 # login_manager = LoginManager(app)
 # login_manager.login_view = 'login'
 # db = pymysql.connect(host='127.0.0.1', user='root', password='capitalD95', db='Infectious')
-db = mysql.connector.connect(user='doug', password='infectious1234', host='127.0.0.1', database='Infectious')
+db = mysql.connector.connect(user='doug', password='infectious1234', host='127.0.0.1', database='users')
 c = db.cursor()
 
 
@@ -47,6 +48,18 @@ cosine_sim = cosine_similarity(count_matrix)
 # movie_user_likes = "Avatar"
 
 similar_movies_array = []
+
+
+@app.errorhandler(404)
+def page_not_found(e):
+    title = "404 - page not found"
+    return render_template('404.html', title=title), 404
+
+
+@app.errorhandler(500)
+def internal_server_error(e):
+    title = "505 - internal server error"
+    return render_template('500.html', title=title), 500
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -85,19 +98,21 @@ def results():
 
 
 @app.route('/register', methods=['GET', 'POST'])
-def signup():
+def register():
     title = 'Register'
-    form = RegisterForm()
+    form = RegistrationForm()
 
     if form.validate_on_submit():
         fName = form.fName.data
         lName = form.lName.data
         username = form.username.data
+        password_hash = generate_password_hash(form.password.data)
 
-        c.execute('INSERT INTO registration values("%s","%s","%s")' % (
-        fName, lName, username))
+        c.execute('INSERT INTO registration values("%s","%s","%s","%s")' % (
+        fName, lName, username, password_hash))
 
         db.commit()
+        return redirect(url_for('home'))
     return render_template("register.html", form=form, title=title)
 
 
@@ -105,6 +120,13 @@ def signup():
 def login():
     title = 'Login'
     form = LoginForm()
+
+    if form.validate_on_submit():
+        username = form.username.data
+        password_hash = generate_password_hash(form.password.data)
+
+        # password_hash = generate_password_hash(password)
+        # check_password_hash(password_hash, password)
     return render_template("login.html", form=form, title=title)
 
 
