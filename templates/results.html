@@ -8,64 +8,41 @@
 {% endblock %}
 
 
+{% block navbar2 %}
+{% endblock %}
+
+
 {% block head %}
-    <!-- Make this a table like the other video game recommendation site -->
     <section>
         <h1 class="results text-white">Results</h1>
-        <table>
-            <!-- <caption>Results</caption> -->
+        <table class="results_table">
             <thead>
                 <tr>
                     <th>Title</th>
-                    <!--<th>IMDb Score</th>-->
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td>{{ movie1 }}</td>
-                    <!--<td>95</td>-->
+                    <td><a href="{{ homepage1 }}">{{ movie1 }}</a></td>
                 </tr>
                 <tr>
-                    <td>{{ movie2 }}</td>
-                    <!--<td>92</td>-->
+                    <td><a href="{{ homepage2 }}">{{ movie2 }}</a></td>
                 </tr>
                 <tr>
-                    <td>{{ movie3 }}</td>
-                    <!--<td>94</td>-->
+                    <td><a href="{{ homepage3 }}">{{ movie3 }}</a></td>
                 </tr>
                 <tr>
-                    <td>{{ movie4 }}</td>
-                    <!--<td>87</td>-->
+                    <td><a href="{{ homepage4 }}">{{ movie4 }}</a></td>
                 </tr>
                 <tr>
-                    <td>{{ movie5 }}</td>
-                    <!--<td>85</td>-->
+                    <td><a href="{{ homepage5 }}">{{ movie5 }}</a></td>
                 </tr>
                 <tr>
-                    <td>{{ movie6 }}</td>
-                    <!--<td>84</td>-->
+                    <td><a href="{{ homepage6 }}">{{ movie6 }}</a></td>
                 </tr>
             </tbody>
         </table>
     </section>
-    <!--
-    <section>
-        <h1 class="results text-white">Results</h1>
-        <div class="test-container">
-              <h1 class="title">Title</h1>
-              <hr>
-              <p class="text-white-50 mx-auto mt-2 mb-5">A video game recommendation system based on emotion.</p>
-              <p class="text-white-50 mx-auto mt-2 mb-5">A video game recommendation system based on emotion.</p>
-              <p class="text-white-50 mx-auto mt-2 mb-5">A video game recommendation system based on emotion.</p>
-              <p class="text-white-50 mx-auto mt-2 mb-5">A video game recommendation system based on emotion.</p>
-              <p class="text-white-50 mx-auto mt-2 mb-5">A video game recommendation system based on emotion.</p>
-              <p class="text-white-50 mx-auto mt-2 mb-5">A video game recommendation system based on emotion.</p>
-              <p class="text-white-50 mx-auto mt-2 mb-5">A video game recommendation system based on emotion.</p>
-              <p class="text-white-50 mx-auto mt-2 mb-5">A video game recommendation system based on emotion.</p>
-            <a href="#signup" class="btn btn-primary js-scroll-trigger">Get Started</a>
-        </div>
-    </section>
-    -->
 {% endblock %}
 
 

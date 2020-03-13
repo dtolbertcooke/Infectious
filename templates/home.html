@@ -8,9 +8,19 @@
 {% endblock %}
 
 
+{% block navbar2 %}
+{% endblock %}
+
+
+{% block flash %}
+    {{ super() }}
+{% endblock %}
+
+
 {% block head %}
     {{ super() }}
 {% endblock %}
+
 
 {% block test %}
 {% endblock %}
@@ -21,9 +31,9 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-10 col-lg-8 mx-auto text-center">
-                    <h2 class="text-white">Movie Recommendation System</h2>
-                    <p class="text-white-50">Enter the name of a movie below.</p>
+                    <h2 class="text-white">Login</h2>
                     {{ wtf.quick_form(form) }}
+                    <p class="text-white-50 mx-auto mt-2 mb-5">New User? <a class="register" href="{{ url_for('register') }}">Register here!</a></p>
                 </div>
             </div>
         </div>

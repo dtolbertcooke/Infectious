@@ -1,7 +1,7 @@
 {% extends "index.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
 
-{% block title %}{{title}}{% endblock %}
+{% block title %}{{ title }}{% endblock %}
 
 {% block navbar %}
  <!-- Navigation bar-->
@@ -15,12 +15,16 @@
       <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav ml-auto">
           <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="/register">Registration</a>
+            <a class="nav-link js-scroll-trigger" href="/how_to">How To</a>
           </li>
         </ul>
       </div>
     </div>
   </nav>
+{% endblock %}
+
+
+{% block navbar2 %}
 {% endblock %}
 
 
@@ -33,7 +37,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-10 col-lg-8 mx-auto text-center">
-                    <h2 class="text-white">Login</h2>
+                    <h2 class="text-white">Edit Profile</h2>
                     {{ wtf.quick_form(form) }}
                 </div>
             </div>

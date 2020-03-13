@@ -1,32 +1,16 @@
+import mysql.connector
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, PasswordField, SelectField, IntegerField
-from wtforms.validators import DataRequired, Length, EqualTo, AnyOf
+from wtforms import StringField, SubmitField, PasswordField, TextAreaField, SelectField, IntegerField
+from wtforms.validators import DataRequired, Length, EqualTo, AnyOf, ValidationError
+from wtforms.widgets.html5 import NumberInput
+
+db = mysql.connector.connect(user='doug', password='infectious1234', host='127.0.0.1', database='users')
+c = db.cursor()
 
 
-# Fix validators. They're supposed to make it so 1 value is acceptable. Currently, it requires all 3.
-# class EmotionForm(FlaskForm):
 class MovieForm(FlaskForm):
     movieName = StringField('', render_kw={"placeholder": "Movie name"},
                             validators=[DataRequired(), Length(min=3, max=20)])
-
-    # emotion1 = SelectField('', choices=[(1, 'Select an emotion...'), ('Fear', 'Fear'),
-    #                                     ('Anger', 'Anger'), ('Sadness', 'Sadness'),
-    #                                     ('Joy', 'Joy'), ('Surprise', 'Surprise'),
-    #                                     ('Trust', 'Trust'), ('Anticipation', 'Anticipation')],
-    #                        default=1, validators=[DataRequired()])
-    # emotion2 = SelectField('', choices=[(1, 'Select an emotion...'), ('Fear', 'Fear'),
-    #                                     ('Anger', 'Anger'), ('Sadness', 'Sadness'),
-    #                                     ('Joy', 'Joy'), ('Surprise', 'Surprise'),
-    #                                     ('Trust', 'Trust'), ('Anticipation', 'Anticipation')],
-    #                        default=1, validators=[
-    #         AnyOf(['Select an emotion...', 'Fear', 'Anger', 'Sadness', 'Joy', 'Surprise', 'Trust', 'Anticipation'])])
-    # emotion3 = SelectField('', choices=[(1, 'Select an emotion...'), ('Fear', 'Fear'),
-    #                                     ('Anger', 'Anger'), ('Sadness', 'Sadness'),
-    #                                     ('Joy', 'Joy'), ('Surprise', 'Surprise'),
-    #                                     ('Trust', 'Trust'), ('Anticipation', 'Anticipation')],
-    #                        default=1, validators=[
-    #         AnyOf(['Select an emotion...', 'Fear', 'Anger', 'Sadness', 'Joy', 'Surprise', 'Trust', 'Anticipation'])])
-
     submit = SubmitField('Submit')
 
 
@@ -45,9 +29,35 @@ class RegistrationForm(FlaskForm):
                         validators=[DataRequired(), Length(min=3, max=20)])
     username = StringField('', render_kw={"placeholder": "Username"},
                            validators=[DataRequired(), Length(min=6, max=35)])
+    age = IntegerField('', render_kw={"placeholder": "Age"},
+                       validators=[DataRequired()], widget=NumberInput())
+    location = StringField('', render_kw={"placeholder": "Location"})
+    bio = TextAreaField('', render_kw={"placeholder": "Biography"},
+                        validators=[Length(min=0, max=500)])
+    fave_genres = StringField('', render_kw={"placeholder": "Favorite genres"})
     password = PasswordField('', render_kw={"placeholder": "Password"},
                              validators=[DataRequired(), Length(min=6),
                                          EqualTo('confirm', message='Passwords must match')])
     confirm = PasswordField('', render_kw={"placeholder": "Repeat Password"},
                             validators=[DataRequired(), Length(min=6)])
+    submit = SubmitField('Submit')
+
+    def validate_username(self, username):
+        c.execute("SELECT username FROM registration WHERE username = '%s'" % username)
+        msg = c.fetchone()
+        if msg:
+            raise ValidationError('Please use a different username.')
+
+
+class EditProfileForm(FlaskForm):
+    fName = StringField('', render_kw={"placeholder": "First name"},
+                        validators=[DataRequired(), Length(min=3, max=20)])
+    lName = StringField('', render_kw={"placeholder": "Last name"},
+                        validators=[DataRequired(), Length(min=3, max=20)])
+    age = IntegerField('', render_kw={"placeholder": "Age"},
+                       validators=[DataRequired()], widget=NumberInput())
+    location = StringField('', render_kw={"placeholder": "Location"})
+    bio = TextAreaField('', render_kw={"placeholder": "Biography"},
+                        validators=[Length(min=0, max=500)])
+    fave_genres = StringField('', render_kw={"placeholder": "Favorite genres"})
     submit = SubmitField('Submit')

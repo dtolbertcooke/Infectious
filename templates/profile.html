@@ -1,0 +1,53 @@
+{% extends "index.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}{{title}}{% endblock %}
+
+
+{% block navbar %}
+{% endblock %}
+
+
+{% block navbar2 %}
+ {{ super() }}
+{% endblock %}
+
+
+{% block head %}
+    <section>
+        <h1 class="results text-white">Hi, {{ fName }}!</h1>
+        <div class="card">
+            <img src="../static/img/default.jpg" height="298" width="298">
+            <h1>{{ fName }} {{ lName }}, {{ age }}</h1>
+            <p class="title">{{ username }}</p>
+            <p>{{ location }}</p>
+            <p><button onclick="window.location.href = '/edit_profile/{{ username }}';">Edit profile</button></p>
+        </div>
+
+        <div class="bio">
+            <h1>Biography</h1>
+{#                <hr>#}
+            <p class="title">{{ bio }}</p>
+        </div>
+
+        <div class="saved_movies">
+            <h1>Favorite genres</h1>
+{#                <hr>#}
+            <p class="title">
+            <ul>
+                <li>{{ fave_genres }}</li>
+            </ul>
+            </p>
+        </div>
+    </section>
+{% endblock %}
+
+
+{% block content %}
+{% endblock %}
+
+
+
+{% block footer %}
+    {{ super() }}
+{% endblock %}

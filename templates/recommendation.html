@@ -1,7 +1,7 @@
 {% extends "index.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
 
-{% block title %}{{ title }}{% endblock %}
+{% block title %}{{title}}{% endblock %}
 
 {% block navbar %}
  <!-- Navigation bar-->
@@ -37,11 +37,9 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-10 col-lg-8 mx-auto text-center">
-                    <h2 class="text-white">Registration</h2>
+                    <h2 class="text-white">Movie Recommendation System</h2>
+                    <p class="text-white-50">Enter the name of a movie below.</p>
                     {{ wtf.quick_form(form) }}
-                    {% for error in form.username.errors %}
-                        <span style="color: red;">[{{ error }}]</span>
-                    {% endfor %}
                 </div>
             </div>
         </div>

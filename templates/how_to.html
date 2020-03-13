@@ -1,0 +1,46 @@
+{% extends "index.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}{{title}}{% endblock %}
+
+
+{% block navbar %}
+    {{ super() }}
+{% endblock %}
+
+
+{% block navbar2 %}
+{% endblock %}
+
+
+{% block head %}
+    <section>
+        <h1 class="results text-white">How to use this application</h1>
+        <div class="how_to">
+            <h1>Registration</h1>
+            <p class="title">Register for the site under the login.
+                This information will be displayed on your profile page.</p>
+            <h1>Login</h1>
+            <p class="title">Log in using credentials made once registered.
+                You will then be directed to your profile page. From here you can edit your profile,
+                use the recommendation system or log out once you are done using the application.</p>
+            <h1>Edit profile</h1>
+            <p class="title">After clicking 'Edit profile' on your profile page, you can change the
+                information you entered when you registered. Once changes have been submitted,
+                you can view the changes on your profile page.</p>
+            <h1>Recommendation</h1>
+            <p class="title">This is the main feature of the application. From here, you can find movies
+                similar to the movie entered so long as the movie entered is in the dataset.</p>
+        </div>
+    </section>
+{% endblock %}
+
+
+{% block content %}
+{% endblock %}
+
+
+
+{% block footer %}
+    {{ super() }}
+{% endblock %}

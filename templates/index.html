@@ -8,7 +8,6 @@
   <meta name="description" content="">
   <meta name="author" content="Douglas Tolbert-Cooke">
 
-  <!--<title>Infectious - A video game recommendation application</title>-->
   <title>{% block title %} {{title}} {% endblock %}</title>
 
   <!-- Bootstrap core CSS -->
@@ -21,6 +20,9 @@
 
   <!-- Custom styles for this template -->
   <link href="../static/css/grayscale.min.css" rel="stylesheet">
+
+  <!-- Add icon library -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
   <style type="text/css">
       body#page-top {
@@ -45,33 +47,45 @@
           background-size: cover;
       }
 
-      table {
-          width: 800px;
+      .results_table {
+          width: 900px;
           background-color: gray;
           margin-left: 275px;
-          margin-right: 160px;
       }
 
-      thead {
+      .profile_table {
+          width: 1400px;
+      }
+
+      .profile_card {
+          padding-left: 140px;
+      }
+
+      .profile_bio {
+          padding-bottom: 380px;
+          padding-right: 120px;
+      }
+
+      .results_table thead {
           background-color: teal;
           border-bottom: 5px solid black;
       }
 
-      th {
+      .results_table th {
           width: 100px;
           font: 20px Nunito;
           font-weight: bold;
       }
 
-      td {
+      .results_table td {
           font-family: Nunito;
       }
 
-      th, td {
+      .results_table th, td {
           padding: 15px;
       }
 
-      tr:nth-child(even) {
+      .results_table tr:nth-child(even) {
           background-color: #f2f2f2;
       }
 
@@ -94,6 +108,104 @@
           background-image: linear-gradient(rgba(22, 22, 22, 0.3) 0px, rgba(22, 22, 22, 0.7) 75%, rgb(22, 22, 22) 100%), url(../static/img/test2.jpg);
           background-size: cover;
       }
+
+      .card {
+          box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+          max-width: 300px;
+          left: 275px;
+          text-align: center;
+      }
+
+      .how_to {
+          box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+          max-width: 875px;
+          margin-left: 275px;
+          padding-left: 15px;
+          display: flex;
+          flex-direction: column;
+          min-width: 0;
+          word-wrap: break-word;
+          background-color: #fff;
+          border: 1px solid rgba(0,0,0,.125);
+          border-radius: .25rem;
+      }
+
+      .bio {
+          box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+          max-width: 500px;
+          left: 670px;
+          bottom: 545px;
+          padding-left: 15px;
+          padding-right: 15px;
+          text-align: center;
+          position: relative;
+
+          display: flex;
+          flex-direction: column;
+          min-width: 0;
+          word-wrap: break-word;
+          background-color: #fff;
+          border: 1px solid rgba(0,0,0,.125);
+          border-radius: .25rem;
+      }
+
+      .saved_movies {
+          box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+          max-width: 500px;
+          left: 670px;
+          bottom: 500px;
+          text-align: center;
+          position: relative;
+
+          display: flex;
+          flex-direction: column;
+          min-width: 0;
+          word-wrap: break-word;
+          background-color: #fff;
+          border: 1px solid rgba(0,0,0,.125);
+          border-radius: .25rem;
+      }
+
+      .title {
+          color: grey;
+          font-size: 18px;
+      }
+
+      button {
+          border: none;
+          outline: 0;
+          display: inline-block;
+          padding: 8px;
+          color: white;
+          background-color: teal;
+          text-align: center;
+          cursor: pointer;
+          width: 100%;
+          font-size: 18px;
+      }
+
+      .results_button {
+          width: auto;
+          margin-left: 700px;
+      }
+
+      a {
+          text-decoration: none;
+          font-size: 22px;
+          color: black;
+      }
+
+      .register {
+          color: #64a19d;
+      }
+
+      button:hover, a:hover {
+          opacity: 0.7;
+      }
+
+      .help-block {
+          color: red !important;
+      }
   </style>
 
 </head>
@@ -112,16 +224,7 @@
       <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav ml-auto">
           <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="/about">About</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="/browse">Browse</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="/register">Register</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="/login">Login</a>
+            <a class="nav-link js-scroll-trigger" href="/how_to">How To</a>
           </li>
         </ul>
       </div>
@@ -129,160 +232,71 @@
   </nav>
 {% endblock %}
 
+{% block navbar2 %}
+  <!-- Navigation bar-->
+  <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+    <div class="container">
+      <a class="navbar-brand js-scroll-trigger" href="/">Infectious</a>
+      <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        Menu
+        <i class="fas fa-bars"></i>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link js-scroll-trigger" href="/recommendation">Recommendation</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link js-scroll-trigger" href="/logout">Logout</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+{% endblock %}
+
+{% block flash %}
+    <div class="container d-flex h-100 align-items-center">
+        <div class="mx-auto text-center">
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for message in messages %}
+                        {{ message }}
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
+    </div>
+{% endblock %}
+
 
 {% block head %}
-  <!-- Header -->
-  <header class="masthead">
-    <div class="container d-flex h-100 align-items-center">
-      <div class="mx-auto text-center">
-        <h1 class="mx-auto my-0 text-uppercase">Infectious</h1>
-        <h2 class="text-white-50 mx-auto mt-2 mb-5">A movie recommendation system.</h2>
-        <a href="#signup" class="btn btn-primary js-scroll-trigger">Get Started</a>
-      </div>
-    </div>
-  </header>
+    <!-- Header -->
+    <header class="masthead">
+        <div class="container d-flex h-100 align-items-center">
+            <div class="mx-auto text-center">
+                <h1 class="mx-auto my-0 text-uppercase">Infectious</h1>
+                <h2 class="text-white-50 mx-auto mt-2 mb-5">A movie recommendation system.</h2>
+                <a href="#signup" class="btn btn-primary js-scroll-trigger">Get Started</a>
+            </div>
+        </div>
+    </header>
 {% endblock %}
 
-
-  <!-- Projects Section
-  <section id="projects" class="projects-section bg-light">
-    <div class="container">
-    -->
-
-      <!-- Featured Project Row
-      <div class="row align-items-center no-gutters mb-4 mb-lg-5">
-        <div class="col-xl-8 col-lg-7">
-          <img class="img-fluid mb-3 mb-lg-0" src="../static/img/bg-masthead.jpg" alt="">
-        </div>
-        <div class="col-xl-4 col-lg-5">
-          <div class="featured-text text-center text-lg-left">
-            <h4>Shoreline</h4>
-            <p class="text-black-50 mb-0">Grayscale is open source and MIT licensed. This means you can use it for any project - even commercial projects! Download it, customize it, and publish your website!</p>
-          </div>
-        </div>
-      </div>
-      -->
-
-      <!-- Project One Row
-      <div class="row justify-content-center no-gutters mb-5 mb-lg-0">
-        <div class="col-lg-6">
-          <img class="img-fluid" src="../static/img/demo-image-01.jpg" alt="">
-        </div>
-        <div class="col-lg-6">
-          <div class="bg-black text-center h-100 project">
-            <div class="d-flex h-100">
-              <div class="project-text w-100 my-auto text-center text-lg-left">
-                <h4 class="text-white">Misty</h4>
-                <p class="mb-0 text-white-50">An example of where you can put an image of a project, or anything else, along with a description.</p>
-                <hr class="d-none d-lg-block mb-0 ml-0">
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      -->
-
-      <!-- Project Two Row
-      <div class="row justify-content-center no-gutters">
-        <div class="col-lg-6">
-          <img class="img-fluid" src="../static/img/demo-image-02.jpg" alt="">
-        </div>
-        <div class="col-lg-6 order-lg-first">
-          <div class="bg-black text-center h-100 project">
-            <div class="d-flex h-100">
-              <div class="project-text w-100 my-auto text-center text-lg-right">
-                <h4 class="text-white">Mountains</h4>
-                <p class="mb-0 text-white-50">Another example of a project with its respective description. These sections work well responsively as well, try this theme on a small screen!</p>
-                <hr class="d-none d-lg-block mb-0 mr-0">
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </section>
-  -->
 
 {% block content %}
-  <!-- Signup Section -->
-  <section id="signup" class="signup-section">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-10 col-lg-8 mx-auto text-center">
-          <h2 class="text-white">Movie Recommendation System</h2>
-          <p class="text-white-50">Enter the name of a movie below.</p>
-          <!--
-          <form class="form-inline d-flex">
-            <input type="email" class="form-control flex-fill mr-0 mr-sm-2 mb-3 mb-sm-0" id="inputEmail" placeholder="Enter an emotion...">
-            <input type="email" class="form-control flex-fill mr-0 mr-sm-2 mb-3 mb-sm-0" id="inputEmail" placeholder="Enter an emotion...">
-            <input type="email" class="form-control flex-fill mr-0 mr-sm-2 mb-3 mb-sm-0" id="inputEmail" placeholder="Enter an emotion...">
-            <button type="submit" class="btn btn-primary mx-auto">Submit</button>
-          </form>
-          -->
+    <section id="signup" class="signup-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-10 col-lg-8 mx-auto text-center">
+                    <h2 class="text-white">Login</h2>
+                    {{ wtf.quick_form(form) }}
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  </section>
+    </section>
 {% endblock %}
 
-  <!-- Contact Section
-  <section class="contact-section bg-black">
-    <div class="container">
-
-      <div class="row">
-
-        <div class="col-md-4 mb-3 mb-md-0">
-          <div class="card py-4 h-100">
-            <div class="card-body text-center">
-              <i class="fas fa-map-marked-alt text-primary mb-2"></i>
-              <h4 class="text-uppercase m-0">Address</h4>
-              <hr class="my-4">
-              <div class="small text-black-50">4923 Market Street, Orlando FL</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-4 mb-3 mb-md-0">
-          <div class="card py-4 h-100">
-            <div class="card-body text-center">
-              <i class="fas fa-envelope text-primary mb-2"></i>
-              <h4 class="text-uppercase m-0">Email</h4>
-              <hr class="my-4">
-              <div class="small text-black-50">
-                <a href="#">myEmail@gmail.com</a>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-4 mb-3 mb-md-0">
-          <div class="card py-4 h-100">
-            <div class="card-body text-center">
-              <i class="fas fa-mobile-alt text-primary mb-2"></i>
-              <h4 class="text-uppercase m-0">Phone</h4>
-              <hr class="my-4">
-              <div class="small text-black-50">+1 (012) 345-6789</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="social d-flex justify-content-center">
-        <a href="#" class="mx-2">
-          <i class="fab fa-twitter"></i>
-        </a>
-        <a href="#" class="mx-2">
-          <i class="fab fa-facebook-f"></i>
-        </a>
-        <a href="#" class="mx-2">
-          <i class="fab fa-github"></i>
-        </a>
-      </div>
-
-    </div>
-  </section>
-  -->
 
 {% block footer %}
   <!-- Footer -->
